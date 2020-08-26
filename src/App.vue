@@ -1,13 +1,22 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view/>
+    <main-tar-bar/>
   </div>
 </template>
 
 <script>
+import MainTarBar from '@/components/contents/maintarbar/MainTarBar'
+import {INCREMENT} from '@/store/mutations.types'
+import '@/assets/css/base.css'
 export default {
-  name: 'App'
+  name: 'App',
+  components:{
+    MainTarBar
+  },
+  methods:{
+    
+  }
 }
 </script>
 
@@ -18,6 +27,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
