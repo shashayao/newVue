@@ -24,7 +24,6 @@ const store = new Vuex.Store({
         },
         addstudent(state,payload){
             // state.student.push(stu)
-            console.log(payload);
             
             state.student.push(payload.stu)
         },
@@ -33,7 +32,6 @@ const store = new Vuex.Store({
             // state.info.name = 'update';
             // Vue.set(state.info,'address','洛杉矶')
             Vue.delete(state.info,'age')
-            console.log(state.info);
             
         }
     },

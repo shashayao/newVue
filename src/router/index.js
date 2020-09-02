@@ -4,6 +4,7 @@ import Home from '@/views/home/Home'
 import Category from '@/views/category/Category'
 import Cart from '@/views/cart/Cart'
 import Me from '@/views/me/Me'
+import Detail from "@/views/Detail/detail"
 
 Vue.use(Router)
 
@@ -16,19 +17,23 @@ export default new Router({
     {
       path: '/home',
       // 指定的组件
-      component:Home
+      component: Home
     },
     {
       path: '/category',
-      component:Category
+      component: Category
     },
     {
       path: '/cart',
-      component:Cart
+      component: Cart
     },
     {
       path: '/me',
-      component:Me
+      component: Me
+    },
+    {
+      path: '/detail/:id',
+      component: Detail
     }
   ]
 })

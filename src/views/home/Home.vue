@@ -15,7 +15,7 @@
       <home-recommend :cproducts="recommend"></home-recommend>
       <home-feature-view></home-feature-view>
       <tab-control class="tab-control" :ctitles="['流行','新款','精选']" @click="tabClick"></tab-control>
-      <div>
+      <!--  <div>
         <ul>
           <li>sasa</li>
           <li>sasa</li>
@@ -33,9 +33,9 @@
           <li>sasa</li>
           <li>sasa</li>
         </ul>
-      </div>
+      </div>-->
+      <goods-list :cgoods="showGoods" />
     </scroller>
-    <!-- <goods-list :goodItem="showGoods" /> -->
     <!-- native监听组件 -->
     <back-top @click.native="backClick" v-show="isShowBack"></back-top>
   </div>
@@ -53,6 +53,7 @@ import Scroller from "@/components/common/scroller/Scroller"; //滚动
 import BackTop from "@/components/contents/backTop/BackTop"; //回到顶部
 // 接口
 import { getHomeMultiData, getHomeGoods } from "@/network/home"; //调用接口
+import { debounce } from "@/common/utils";
 export default {
   name: "Home",
   components: {
@@ -78,6 +79,7 @@ export default {
       },
       currentType: "pop",
       isShowBack: false,
+      saveY: 0,
     };
   },
   //生命周期函数
@@ -89,13 +91,19 @@ export default {
     this.MgetHomeGoods("new");
     this.MgetHomeGoods("sell"); */
   },
+  computed() {
+    const refresh = debounce(this.$refs.scroller.refresh, 200);
+
+    this.$bus.$on("itemImageLoad", () => {
+      refresh();
+    });
+  },
   methods: {
     /*
      * 事件监听相关的方法
      */
     // 分类商品
     tabClick(index) {
-      console.log(1)
       switch (index) {
         case 0:
           this.currentType = "pop";
@@ -118,7 +126,7 @@ export default {
     },
     // 加载更多
     loadMore() {
-      this.getHomeGoods(this.currentType);
+      this.MgetHomeGoods(this.currentType);
     },
     /*
      *网络请求相关方法
@@ -143,15 +151,83 @@ export default {
   },
   computed: {
     showGoods() {
-      return this.goods[this.currentType].list;
+      return [
+        {
+          id: 1,
+          name: "意大利宾渡",
+          image:
+            "https://m.360buyimg.com/babel/s333x333_jfs/t1/35540/25/105/399472/5ca6c6f5Ef53ed7a5/31895ad6b59433c3.png",
+          price: "$12",
+        },
+        {
+          id: 2,
+          name: "意大利宾渡1",
+          image:
+            "https://m.360buyimg.com/babel/s333x333_jfs/t1/35540/25/105/399472/5ca6c6f5Ef53ed7a5/31895ad6b59433c3.png",
+            price: "$12",
+        },
+        {
+          id: 3,
+          name: "意大利宾渡2",
+          image:
+            "https://m.360buyimg.com/babel/s333x333_jfs/t1/35540/25/105/399472/5ca6c6f5Ef53ed7a5/31895ad6b59433c3.png",
+            price: "$12",
+        },
+        {
+          id: 4,
+          name: "意大利宾渡3",
+          image:
+            "https://m.360buyimg.com/babel/s333x333_jfs/t1/35540/25/105/399472/5ca6c6f5Ef53ed7a5/31895ad6b59433c3.png",
+            price: "$12",
+        },
+        {
+          id: 5,
+          name: "意大利宾渡4",
+          image:
+            "https://m.360buyimg.com/babel/s333x333_jfs/t1/35540/25/105/399472/5ca6c6f5Ef53ed7a5/31895ad6b59433c3.png",
+            price: "$12",
+        },
+        {
+          id: 6,
+          name: "意大利宾渡5",
+          image:
+            "https://m.360buyimg.com/babel/s333x333_jfs/t1/35540/25/105/399472/5ca6c6f5Ef53ed7a5/31895ad6b59433c3.png",
+            price: "$12",
+        },
+        {
+          id: 7,
+          name: "意大利宾渡6",
+          image:
+            "https://m.360buyimg.com/babel/s333x333_jfs/t1/35540/25/105/399472/5ca6c6f5Ef53ed7a5/31895ad6b59433c3.png",
+            price: "$12",
+        },
+        {
+          id: 8,
+          name: "意大利宾渡7",
+          image:
+            "https://m.360buyimg.com/babel/s333x333_jfs/t1/35540/25/105/399472/5ca6c6f5Ef53ed7a5/31895ad6b59433c3.png",
+            price: "$12",
+        },
+      ]; //this.goods[this.currentType].list;
     },
+  },
+  destroyed() {
+    //离开页面会销毁状态
+    console.log("home destroyed");
+  },
+  activated() {
+    this.$refs.scroller.scrollTo(0, this.saveY, 0);
+    this.$refs.scroller.refresh();
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroller.scroller.y;
   },
 };
 </script>
 <style scoped>
 /* scoped 域 */
 #home {
-  padding-top: 44px;
+  /* padding-top: 44px; */
   height: 100vh;
   position: relative;
 }
@@ -160,11 +236,11 @@ export default {
   background-color: var(--color-tint);
   color: #fff;
 
-  position: fixed;
+  /* position: fixed; 
   left: 0;
   right: 0;
   top: 0;
-  z-index: 9;
+  z-index: 9;*/
 }
 
 .home-tab-control {
